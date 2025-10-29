@@ -8,3 +8,7 @@ public class Product {
 
   public string Name { get; set; }
 }
+
+public class ProductDTO {
+  public string Name { get; set; }
+}

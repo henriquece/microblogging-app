@@ -1,22 +1,31 @@
 using Api.Data;
 using Api.Models;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class ProductsController(AppDbContext appDbContext) : ControllerBase {
+public class ProductsController(AppDbContext appDbContext, IMapper mapper, ILogger<ProductsController> logger) : ControllerBase {
   private readonly AppDbContext _appDbContext = appDbContext;
+
+  private readonly IMapper _mapper = mapper;
+
+  private readonly ILogger _logger = logger;
 
   /// <summary>
   /// List all products.
   /// </summary>
   [HttpGet]
-  public List<string> GetProducts() {
-    var products = _appDbContext.Products.Select(product => product.Name).ToList();
+  public List<ProductDTO> GetProducts() {
+    var products = _appDbContext.Products.ToList();
 
-    return products;
+    var productsDTOs = _mapper.Map<List<ProductDTO>>(products);
+
+    _logger.LogInformation("Oiii");
+
+    return productsDTOs;
   }
 
   [HttpPost]

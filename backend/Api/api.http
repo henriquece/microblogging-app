@@ -7,5 +7,5 @@ Accept: application/json
 POST {{api_HostAddress}}/products/
 Content-Type: application/json
 
-{ "name": "car" }
+{ "name": "chair" }
 ###
