@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   postgres:
     image: postgres
@@ -33,10 +31,33 @@ services:
   backend:
     # image: henriquece/social-media-api:3
     build: ./
-    ports:
-      - '8080:8080'
+    # ports:
+    #   - '8080:8080'
+    expose:
+      - "8080"
     depends_on:
       migrate:
         condition: service_completed_successfully
     environment:
       - ConnectionStrings__AppDbConnectionString=Host=postgres;Port=5432;Username=postgres;Password=example;Database=social-media;
+
+  server:
+    image: 'nginx:stable-alpine'
+    # build:
+    #   context: .
+    #   dockerfile: dockerfiles/nginx.dockerfile
+    ports:
+      - '80:80'
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    depends_on:
+      - backend
+
+  certbot:
+    image: certbot/certbot
+    no_healthcheck: true
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
