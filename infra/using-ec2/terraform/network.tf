@@ -50,6 +50,24 @@ resource "aws_vpc_security_group_ingress_rule" "allow_access" {
   cidr_ipv4         = "104.30.160.22/32"
 }
 
+resource "aws_vpc_security_group_ingress_rule" "allow_http" {
+  security_group_id = aws_security_group.social_media.id
+  description       = "Allow http from specific IP"
+  from_port         = 80
+  to_port           = 80
+  ip_protocol       = "tcp"
+  cidr_ipv4   = "0.0.0.0/0"
+}
+
+resource "aws_vpc_security_group_ingress_rule" "allow_https" {
+  security_group_id = aws_security_group.social_media.id
+  description       = "Allow https from specific IP"
+  from_port         = 443
+  to_port           = 443
+  ip_protocol       = "tcp"
+  cidr_ipv4   = "0.0.0.0/0"
+}
+
 resource "aws_vpc_security_group_egress_rule" "allow_all_outbound" {
   security_group_id = aws_security_group.social_media.id
 
