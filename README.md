@@ -12,6 +12,6 @@
 
 - Connect to the ec2 instance and run the file "init.sh" located in the "/microblogging-app/infra/prod/using-ec2/ec2" folder: `sh init.sh`
 
-- Finished! The api is available at "https://api.henriquece.dev".
+- Finished! The api is available at https://api.henriquece.dev.
 
 ##### Other deploys
