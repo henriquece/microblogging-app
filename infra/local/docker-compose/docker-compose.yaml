@@ -1,0 +1,62 @@
+services:
+  postgres:
+    image: postgres
+    restart: always
+    ports:
+      - '5433:5432'
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 500ms
+      retries: 3
+      start_period: 500ms
+      start_interval: 500ms
+    #volumes:
+    #  - type: tmpfs
+    #    target: /dev/shm
+    #    tmpfs:
+    #      size: 134217728 # 128*2^20 bytes = 128Mb
+    environment:
+      POSTGRES_PASSWORD: example
+
+  migrate:
+    build:
+      context: ../../../backend/Api
+      dockerfile: migrations.Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - ConnectionStrings__AppDbConnectionString=Host=postgres;Port=5432;Username=postgres;Password=example;Database=social-media;
+
+  backend:
+    # image: henriquece/social-media-api:3
+    build:
+      context: ../../../backend/Api
+      dockerfile: Dockerfile
+    expose:
+      - "8080"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    environment:
+      - ConnectionStrings__AppDbConnectionString=Host=postgres;Port=5432;Username=postgres;Password=example;Database=social-media;
+
+  server:
+    image: 'nginx:stable-alpine'
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ../nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    depends_on:
+      - backend
+
+  certbot:
+    image: certbot/certbot
+    healthcheck:
+      disable: true
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot

@@ -28,10 +28,6 @@ resource "aws_instance" "social_media_1" {
         sudo sh ./get-docker.sh
 
         git clone https://github.com/henriquece/social-media.git
-
-        cd social-media/backend/Api/
-
-        sudo docker compose up
       EOF
 
   vpc_security_group_ids      = [aws_security_group.social_media.id]
