@@ -26,10 +26,10 @@ services:
       postgres:
         condition: service_healthy
     environment:
-      - ConnectionStrings__AppDbConnectionString=Host=postgres;Port=5432;Username=postgres;Password=example;Database=social-media;
+      - ConnectionStrings__AppDbConnectionString=Host=postgres;Port=5432;Username=postgres;Password=example;Database=microblogging-app;
 
   backend:
-    # image: henriquece/social-media-api:3
+    # image: henriquece/microblogging-api:3
     build:
       context: ../../../backend/Api
       dockerfile: Dockerfile
@@ -39,7 +39,7 @@ services:
       migrate:
         condition: service_completed_successfully
     environment:
-      - ConnectionStrings__AppDbConnectionString=Host=postgres;Port=5432;Username=postgres;Password=example;Database=social-media;
+      - ConnectionStrings__AppDbConnectionString=Host=postgres;Port=5432;Username=postgres;Password=example;Database=microblogging-app;
 
   server:
     image: 'nginx:stable-alpine'

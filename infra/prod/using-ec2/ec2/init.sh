@@ -1,5 +1,5 @@
 #!/bin/bash
-cd /social-media/infra/prod/using-ec2/docker-compose/
+cd /microblogging-app/infra/prod/using-ec2/docker-compose/
 
 sudo docker compose up -d server-http
 

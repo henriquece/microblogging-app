@@ -27,4 +27,4 @@ spec:
     spec:
       containers:
         - name: api
-          image: henriquece/social-media-api:3
+          image: henriquece/microblogging-api:3

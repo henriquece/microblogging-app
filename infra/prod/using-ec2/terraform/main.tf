@@ -18,7 +18,7 @@ resource "aws_key_pair" "deployer" {
   public_key = file("~/.ssh/id_ed25519.pub")
 }
 
-resource "aws_instance" "social_media_1" {
+resource "aws_instance" "microblogging_app_1" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t4g.micro"
   user_data     = <<-EOF
@@ -27,15 +27,15 @@ resource "aws_instance" "social_media_1" {
         
         sudo sh ./get-docker.sh
 
-        git clone https://github.com/henriquece/social-media.git
+        git clone https://github.com/henriquece/microblogging-app.git
       EOF
 
-  vpc_security_group_ids      = [aws_security_group.social_media.id]
+  vpc_security_group_ids      = [aws_security_group.microblogging_app.id]
   subnet_id                   = module.vpc.public_subnets[0]
   associate_public_ip_address = true
   key_name                    = aws_key_pair.deployer.key_name
 
   tags = {
-    Name = "social_media_1"
+    Name = "microblogging_app_1"
   }
 }
