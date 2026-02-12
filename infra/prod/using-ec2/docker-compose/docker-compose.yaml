@@ -1,0 +1,67 @@
+services:
+  postgres:
+    image: postgres
+    restart: always
+    ports:
+      - '5432:5432'
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 500ms
+      retries: 3
+      start_period: 500ms
+      start_interval: 500ms
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    env_file: ".env"
+
+  migrate:
+    build:
+      context: ../../../../backend/Api
+      dockerfile: migrations.Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file: ".env"
+
+  backend:
+    build:
+      context: ../../../../backend/Api
+      dockerfile: api.Dockerfile.prod
+    expose:
+      - "8080"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    env_file: ".env"
+
+  server-http:
+    image: 'nginx:stable-alpine'
+    ports:
+      - '80:80'
+    volumes:
+      - ../nginx/nginx-http.conf:/etc/nginx/nginx.conf:ro
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+
+  server-https:
+    image: 'nginx:stable-alpine'
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ../nginx/nginx-https.conf:/etc/nginx/nginx.conf:ro
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    depends_on:
+      - backend
+
+  certbot:
+    image: certbot/certbot
+    healthcheck:
+      disable: true
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+
+volumes:
+  postgres_data:

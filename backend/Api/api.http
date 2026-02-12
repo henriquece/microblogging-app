@@ -1,0 +1,11 @@
+@api_HostAddress = http://localhost:8080
+
+GET {{api_HostAddress}}/users/
+Accept: application/json
+###
+
+POST {{api_HostAddress}}/users/
+Content-Type: application/json
+
+{ "name": "Bob" }
+###

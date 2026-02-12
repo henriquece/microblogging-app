@@ -1,0 +1,2 @@
+POSTGRES_PASSWORD=
+ConnectionStrings__AppDbConnectionString=Host=postgres;Port=5432;Username=postgres;Password=;Database=microblogging-app;

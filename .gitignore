@@ -1,0 +1,12 @@
+.DS_Store
+.terraform*
+*.tfstate*
+
+bin/
+obj/
+out/
+.env*
+
+node_modules/
+.react-router/
+build/
