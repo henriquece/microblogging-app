@@ -14,4 +14,4 @@ WORKDIR /App
 
 COPY --from=build /App/out .
 
-ENTRYPOINT ["dotnet", "Api.dll"]
+ENTRYPOINT ["dotnet", "Api.dll", "--urls", "http://0.0.0.0:8080"]

@@ -28,7 +28,7 @@ services:
       context: ../../../../backend/Api
       dockerfile: api.Dockerfile.prod
     expose:
-      - "8080"
+      - '8080'
     depends_on:
       migrate:
         condition: service_completed_successfully
@@ -44,7 +44,9 @@ services:
       - ./certbot/www:/var/www/certbot
 
   server-https:
-    image: 'nginx:stable-alpine'
+    build:
+      context: ../../../../
+      dockerfile: infra/prod/using-ec2/nginx/nginx-https.Dockerfile
     ports:
       - '80:80'
       - '443:443'
