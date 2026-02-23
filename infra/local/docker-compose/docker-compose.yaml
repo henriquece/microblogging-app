@@ -25,15 +25,34 @@ services:
         condition: service_healthy
     volumes:
       - ../../../backend/Api:/App
+      - /App/bin
+      - /App/obj
     env_file: ".env"
 
-  migrate:
+  migrations:
     build:
       context: ../../../backend/Api
       dockerfile: migrations.Dockerfile
     depends_on:
       postgres:
         condition: service_healthy
+    volumes:
+      - ../../../backend/Api:/App
+      - /App/bin
+      - /App/obj
+    env_file: ".env"
+
+  database-update:
+    build:
+      context: ../../../backend/Api
+      dockerfile: database-update.Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ../../../backend/Api:/App
+      - /App/bin
+      - /App/obj
     env_file: ".env"
 
   frontend:

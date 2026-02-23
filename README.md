@@ -13,7 +13,7 @@
   - The api is available at http://localhost:5100.
   - Swagger is available at http://localhost:5100/swagger/index.html.
 
-- Obs: Migrations are not applied automatically. To apply, run `docker-compose run migrate`.
+- Obs: Migrations are not applied automatically. To apply, run `docker-compose run database-update`.
 
 ### Prod
 #### Using EC2

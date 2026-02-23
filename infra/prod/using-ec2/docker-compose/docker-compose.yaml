@@ -14,10 +14,10 @@ services:
       - postgres_data:/var/lib/postgresql
     env_file: ".env"
 
-  migrate:
+  database-update:
     build:
       context: ../../../../backend/Api
-      dockerfile: migrations.Dockerfile
+      dockerfile: database-update.Dockerfile
     depends_on:
       postgres:
         condition: service_healthy
@@ -30,7 +30,7 @@ services:
     expose:
       - '8080'
     depends_on:
-      migrate:
+      database-update:
         condition: service_completed_successfully
     env_file: ".env"
 
