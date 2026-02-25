@@ -4,7 +4,7 @@
 ### Local
 - Go to "infra/local/docker-compose" folder.
 
-- Create an ".env" file based on "env" file and add the Postgres password on both POSTGRES_PASSWORD and ConnectionStrings__AppDbConnectionString env vars.
+- Create a ".env" file based on "env" file and add the Postgres password on both POSTGRES_PASSWORD and ConnectionStrings__AppDbConnectionString env vars.
 
 - Run: `docker-compose up backend frontend`
 
